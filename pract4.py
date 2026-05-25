@@ -13,7 +13,12 @@ def process_image(args):
     return True
 
 def sequential_processing(input_files, output_dir):
-    tasks = [(input_files[i], os.path.join(output_dir, f"out_{i}.jpg")) for i in range(len(input_files))]
+    tasks = []
+    for i in range(len(input_files)):
+        otkuda = input_files[i]
+        kuda = output_dir + "/" + "out_" + str(i) + ".jpg"
+        para = (otkuda, kuda)
+        tasks.append(para)
     
     start = time.time()
     for task in tasks:
@@ -21,14 +26,19 @@ def sequential_processing(input_files, output_dir):
     return time.time() - start
 
 def parallel_processing(input_files, output_dir):
-    tasks = [(input_files[i], os.path.join(output_dir, f"out_{i}.jpg")) for i in range(len(input_files))]
+    tasks = []
+    for i in range(len(input_files)):
+        otkuda = input_files[i]
+        kuda = output_dir + "/" + "out_" + str(i) + ".jpg"
+        para = (otkuda, kuda)
+        tasks.append(para)
     
     start = time.time()
     with multiprocessing.Pool() as pool:
         pool.map(process_image, tasks)
     return time.time() - start
 
-def create_test_images(num_images=10):
+def create_test_images(num_images=20):
     os.makedirs("test_images", exist_ok=True)
     for i in range(num_images):
         img = Image.new('RGB', (1920, 1080), color=(i*25%255, i*50%255, i*75%255))
@@ -38,7 +48,10 @@ def main():
     create_test_images(20)
     os.makedirs("processed", exist_ok=True)
     
-    input_files = [os.path.join("test_images", f) for f in os.listdir("test_images") if f.endswith(".jpg")]
+    input_files = []
+    for f in os.listdir("test_images"):
+        if f.endswith(".jpg"):
+            input_files.append(os.path.join("test_images", f))
     input_files.sort()
     
     print(f"Обработка {len(input_files)} изображений")

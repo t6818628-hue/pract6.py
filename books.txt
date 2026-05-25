@@ -1,0 +1,8 @@
+[
+  {
+    "title": "Мцыри",
+    "author": "Лермонтов",
+    "is_taken": true,
+    "taken_by": "Артём"
+  }
+]

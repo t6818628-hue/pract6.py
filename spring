@@ -1,0 +1,48 @@
+package com.example.pr2p1;
+
+import ...
+@SpringBootApplication
+public class Pr2P1Application
+// создаём контроллер и в application.properties ввести server.port=8081
+
+
+
+
+//контроллер:
+package com.example.pr2p1.controller
+
+@Controller
+public class HomeController{
+//создаём html 
+
+    @getMapping("/")// /-путь по умолчанию
+    String home() {
+        return "home"; //возвращаем страницу
+    } // чтобы понять что сайт открылася наодим сообшение start или completed
+
+    @PostMapping("/home")
+    String homePost(Model model, @RequestParam(value = "TextPrint",required = true, defaultValue = "Здесь пусто!") String usertext) { //указываем для передачи данных переменной. TextPrint - с какой переменной забираем
+        model.addAttribute(attributeName:"text", usertext)
+        return "home"; // defaultValue - для пустого значеня, которое ввел пользователь
+    }
+
+    @GetMapping("/calc")
+    String calc() {
+        return "calc";
+    }
+} // чтобы открыть сайт пишем localhost:8081
+
+
+
+//HTML
+<a_href="calc">Переход на другую страницу</a> //указываем в html, чтобы создать ссылку на другую страницу
+//или
+<form method="get" action="/calc"> //метод - GetMapping
+    <input type="submit" value="Переход">
+</form>
+
+<form method="post" action="/home"> //метод - PostMapping
+    <input type="input" name="TextPrint">
+    <input type="submit" value="Отправить"> 
+</form> //форма для @PostMapping("/home")
+<h1 th:text="${text}"></h1> //кастомная переменная которая передается с контроллера
